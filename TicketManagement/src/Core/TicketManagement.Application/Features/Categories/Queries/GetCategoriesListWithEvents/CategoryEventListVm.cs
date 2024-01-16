@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace TicketManagement.Application.Features.Categories.Queries.GetCategoriesListWithEvents
+﻿namespace TicketManagement.Application.Features.Categories.Queries.GetCategoriesListWithEvents
 {
     public class CategoryEventListVm
     {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TicketManagement.Application.Features.Categories.Queries.GetCategoriesListWithEvents
+﻿namespace TicketManagement.Application.Features.Categories.Queries.GetCategoriesListWithEvents
 {
     public class CategoryEventDto
     {

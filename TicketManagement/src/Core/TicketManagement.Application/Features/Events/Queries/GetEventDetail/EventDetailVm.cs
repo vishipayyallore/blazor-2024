@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TicketManagement.Application.Features.Events.Queries.GetEventDetail
+﻿namespace TicketManagement.Application.Features.Events.Queries.GetEventDetail
 {
     public class EventDetailVm
     {

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using GloboTicket.TicketManagement.Domain.Entities;
 using MediatR;
 using TicketManagement.Application.Contracts.Persistence;
+using TicketManagement.Domain.Entities;
 
 namespace TicketManagement.Application.Features.Events.Commands.DeleteEvent
 {
