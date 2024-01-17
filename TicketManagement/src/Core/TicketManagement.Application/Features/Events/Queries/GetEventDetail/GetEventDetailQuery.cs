@@ -1,9 +1,8 @@
 ﻿using MediatR;
 
-namespace TicketManagement.Application.Features.Events.Queries.GetEventDetail
+namespace TicketManagement.Application.Features.Events.Queries.GetEventDetail;
+
+public class GetEventDetailQuery : IRequest<EventDetailVm>
 {
-    public class GetEventDetailQuery : IRequest<EventDetailVm>
-    {
-        public Guid Id { get; set; }
-    }
+    public Guid Id { get; set; }
 }
