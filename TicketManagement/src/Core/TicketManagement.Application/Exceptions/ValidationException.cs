@@ -1,19 +1,18 @@
 ﻿using FluentValidation.Results;
 
-namespace TicketManagement.Application.Exceptions
+namespace TicketManagement.Application.Exceptions;
+
+public class ValidationException : Exception
 {
-    public class ValidationException : Exception
+    public List<string> ValidationErrors { get; set; }
+
+    public ValidationException(ValidationResult validationResult)
     {
-        public List<string> ValdationErrors { get; set; }
+        ValidationErrors = [];
 
-        public ValidationException(ValidationResult validationResult)
+        foreach (var validationError in validationResult.Errors)
         {
-            ValdationErrors = new List<string>();
-
-            foreach (var validationError in validationResult.Errors)
-            {
-                ValdationErrors.Add(validationError.ErrorMessage);
-            }
+            ValidationErrors.Add(validationError.ErrorMessage);
         }
     }
 }

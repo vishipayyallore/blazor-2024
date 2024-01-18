@@ -8,5 +8,5 @@ public class Category : AuditableEntity
 
     public string Name { get; set; } = string.Empty;
 
-    public ICollection<Event>? Events { get; set; }
+    public ICollection<Event> Events { get; set; } = default!;
 }

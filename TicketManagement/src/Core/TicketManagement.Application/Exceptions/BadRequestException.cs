@@ -1,10 +1,5 @@
-﻿namespace TicketManagement.Application.Exceptions
-{
-    public class BadRequestException : Exception
-    {
-        public BadRequestException(string message) : base(message)
-        {
+﻿namespace TicketManagement.Application.Exceptions;
 
-        }
-    }
+public class BadRequestException(string message) : Exception(message)
+{
 }
