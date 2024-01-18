@@ -1,10 +1,5 @@
-﻿namespace TicketManagement.Application.Exceptions
+﻿namespace TicketManagement.Application.Exceptions;
+
+public class NotFoundException(string name, object key) : Exception($"{name} ({key}) is not found")
 {
-    public class NotFoundException : Exception
-    {
-        public NotFoundException(string name, object key)
-            : base($"{name} ({key}) is not found")
-        {
-        }
-    }
 }
