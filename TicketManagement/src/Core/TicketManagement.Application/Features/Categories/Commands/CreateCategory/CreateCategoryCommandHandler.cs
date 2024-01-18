@@ -3,7 +3,7 @@ using MediatR;
 using TicketManagement.Application.Contracts.Persistence;
 using TicketManagement.Domain.Entities;
 
-namespace TicketManagement.Application.Features.Categories.Commands.CreateCateogry;
+namespace TicketManagement.Application.Features.Categories.Commands.CreateCategory;
 
 public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, CreateCategoryCommandResponse>
 {

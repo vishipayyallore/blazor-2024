@@ -1,4 +1,4 @@
-﻿namespace TicketManagement.Application.Features.Categories.Commands.CreateCateogry
+﻿namespace TicketManagement.Application.Features.Categories.Commands.CreateCategory
 {
     public class CreateCategoryDto
     {
