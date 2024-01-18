@@ -23,7 +23,7 @@ public class CreateCategoryCommandHandler(IAsyncRepository<Category> categoryRep
             createCategoryCommandResponse.Success = false;
             createCategoryCommandResponse.ValidationErrors = [];
 
-            foreach (var error in validationResult.Errors)
+            foreach (ValidationFailure? error in validationResult.Errors)
             {
                 createCategoryCommandResponse.ValidationErrors.Add(error.ErrorMessage);
             }
