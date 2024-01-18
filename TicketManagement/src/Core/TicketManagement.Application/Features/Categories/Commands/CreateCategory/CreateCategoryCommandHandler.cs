@@ -1,32 +1,27 @@
 ﻿using AutoMapper;
+using FluentValidation.Results;
 using MediatR;
 using TicketManagement.Application.Contracts.Persistence;
 using TicketManagement.Domain.Entities;
 
 namespace TicketManagement.Application.Features.Categories.Commands.CreateCategory;
 
-public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, CreateCategoryCommandResponse>
+public class CreateCategoryCommandHandler(IAsyncRepository<Category> categoryRepository, IMapper mapper) : IRequestHandler<CreateCategoryCommand, CreateCategoryCommandResponse>
 {
-    private readonly IAsyncRepository<Category> _categoryRepository;
-    private readonly IMapper _mapper;
-
-    public CreateCategoryCommandHandler(IMapper mapper, IAsyncRepository<Category> categoryRepository)
-    {
-        _mapper = mapper;
-        _categoryRepository = categoryRepository;
-    }
+    private readonly IAsyncRepository<Category> _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
+    private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
     public async Task<CreateCategoryCommandResponse> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var createCategoryCommandResponse = new CreateCategoryCommandResponse();
+        CreateCategoryCommandResponse createCategoryCommandResponse = new();
 
-        var validator = new CreateCategoryCommandValidator();
-        var validationResult = await validator.ValidateAsync(request);
+        CreateCategoryCommandValidator validator = new();
+        ValidationResult? validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (validationResult.Errors.Count > 0)
         {
             createCategoryCommandResponse.Success = false;
-            createCategoryCommandResponse.ValidationErrors = new List<string>();
+            createCategoryCommandResponse.ValidationErrors = [];
             foreach (var error in validationResult.Errors)
             {
                 createCategoryCommandResponse.ValidationErrors.Add(error.ErrorMessage);
@@ -34,7 +29,7 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
         }
         if (createCategoryCommandResponse.Success)
         {
-            var category = new Category() { Name = request.Name };
+            Category category = new() { Name = request.Name };
             category = await _categoryRepository.AddAsync(category);
             createCategoryCommandResponse.Category = _mapper.Map<CreateCategoryDto>(category);
         }
