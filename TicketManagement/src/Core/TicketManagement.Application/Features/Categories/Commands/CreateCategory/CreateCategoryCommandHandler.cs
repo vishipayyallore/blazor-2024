@@ -14,14 +14,15 @@ public class CreateCategoryCommandHandler(IAsyncRepository<Category> categoryRep
     public async Task<CreateCategoryCommandResponse> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
         CreateCategoryCommandResponse createCategoryCommandResponse = new();
-
         CreateCategoryCommandValidator validator = new();
+
         ValidationResult? validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (validationResult.Errors.Count > 0)
         {
             createCategoryCommandResponse.Success = false;
             createCategoryCommandResponse.ValidationErrors = [];
+
             foreach (var error in validationResult.Errors)
             {
                 createCategoryCommandResponse.ValidationErrors.Add(error.ErrorMessage);
@@ -30,6 +31,7 @@ public class CreateCategoryCommandHandler(IAsyncRepository<Category> categoryRep
         if (createCategoryCommandResponse.Success)
         {
             Category category = new() { Name = request.Name };
+
             category = await _categoryRepository.AddAsync(category);
             createCategoryCommandResponse.Category = _mapper.Map<CreateCategoryDto>(category);
         }
