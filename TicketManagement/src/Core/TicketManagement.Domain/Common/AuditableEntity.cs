@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace TicketManagement.Domain.Common;
+﻿namespace TicketManagement.Domain.Common;
 
 public class AuditableEntity
 {
