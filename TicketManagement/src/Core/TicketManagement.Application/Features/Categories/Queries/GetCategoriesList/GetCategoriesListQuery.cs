@@ -1,8 +1,7 @@
 ﻿using MediatR;
 
-namespace TicketManagement.Application.Features.Categories.Queries.GetCategoriesList
+namespace TicketManagement.Application.Features.Categories.Queries.GetCategoriesList;
+
+public class GetCategoriesListQuery : IRequest<List<CategoryListVm>>
 {
-    public class GetCategoriesListQuery : IRequest<List<CategoryListVm>>
-    {
-    }
 }
