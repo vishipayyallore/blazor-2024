@@ -1,34 +1,30 @@
 ﻿using AutoMapper;
+using FluentValidation.Results;
 using MediatR;
 using TicketManagement.Application.Contracts.Persistence;
 using TicketManagement.Domain.Entities;
 
-namespace TicketManagement.Application.Features.Events.Commands.CreateEvent
+namespace TicketManagement.Application.Features.Events.Commands.CreateEvent;
+
+public class CreateEventCommandHandler(IEventRepository eventRepository, IMapper mapper) : IRequestHandler<CreateEventCommand, Guid>
 {
-    public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, Guid>
+    private readonly IEventRepository _eventRepository = eventRepository ?? throw new ArgumentNullException(nameof(eventRepository));
+    private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+
+    public async Task<Guid> Handle(CreateEventCommand request, CancellationToken cancellationToken)
     {
-        private readonly IEventRepository _eventRepository;
-        private readonly IMapper _mapper;
+        Event? @event = _mapper.Map<Event>(request);
 
-        public CreateEventCommandHandler(IMapper mapper, IEventRepository eventRepository)
+        CreateEventCommandValidator validator = new(_eventRepository);
+        ValidationResult? validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (validationResult.Errors.Count > 0)
         {
-            _mapper = mapper;
-            _eventRepository = eventRepository;
+            throw new Exceptions.ValidationException(validationResult);
         }
 
-        public async Task<Guid> Handle(CreateEventCommand request, CancellationToken cancellationToken)
-        {
-            var @event = _mapper.Map<Event>(request);
+        @event = await _eventRepository.AddAsync(@event);
 
-            var validator = new CreateEventCommandValidator(_eventRepository);
-            var validationResult = await validator.ValidateAsync(request);
-
-            if (validationResult.Errors.Count > 0)
-                throw new Exceptions.ValidationException(validationResult);
-
-            @event = await _eventRepository.AddAsync(@event);
-
-            return @event.EventId;
-        }
+        return @event.EventId;
     }
 }

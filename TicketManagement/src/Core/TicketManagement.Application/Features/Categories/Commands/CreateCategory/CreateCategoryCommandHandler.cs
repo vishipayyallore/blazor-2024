@@ -28,6 +28,7 @@ public class CreateCategoryCommandHandler(IAsyncRepository<Category> categoryRep
                 createCategoryCommandResponse.ValidationErrors.Add(error.ErrorMessage);
             }
         }
+
         if (createCategoryCommandResponse.Success)
         {
             Category category = new() { Name = request.Name };
