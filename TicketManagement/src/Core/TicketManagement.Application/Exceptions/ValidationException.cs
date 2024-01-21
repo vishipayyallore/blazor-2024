@@ -10,7 +10,7 @@ public class ValidationException : Exception
     {
         ValidationErrors = [];
 
-        foreach (var validationError in validationResult.Errors)
+        foreach (ValidationFailure? validationError in validationResult.Errors)
         {
             ValidationErrors.Add(validationError.ErrorMessage);
         }
