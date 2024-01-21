@@ -12,7 +12,7 @@ public class DeleteEventCommandHandler(IAsyncRepository<Event> eventRepository, 
 
     public async Task Handle(DeleteEventCommand request, CancellationToken cancellationToken)
     {
-        var eventToDelete = await _eventRepository.GetByIdAsync(request.EventId);
+        Event? eventToDelete = await _eventRepository.GetByIdAsync(request.EventId);
 
         await _eventRepository.DeleteAsync(eventToDelete);
     }
