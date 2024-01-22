@@ -5,21 +5,15 @@ using TicketManagement.Domain.Entities;
 
 namespace TicketManagement.Application.Features.Events.Commands.UpdateEvent
 {
-    public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand>
+    public class UpdateEventCommandHandler(IAsyncRepository<Event> eventRepository, IMapper mapper) : IRequestHandler<UpdateEventCommand>
     {
-        private readonly IAsyncRepository<Event> _eventRepository;
-        private readonly IMapper _mapper;
-
-        public UpdateEventCommandHandler(IMapper mapper, IAsyncRepository<Event> eventRepository)
-        {
-            _mapper = mapper;
-            _eventRepository = eventRepository;
-        }
+        private readonly IAsyncRepository<Event> _eventRepository = eventRepository ?? throw new ArgumentNullException(nameof(eventRepository));
+        private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
         public async Task Handle(UpdateEventCommand request, CancellationToken cancellationToken)
         {
 
-            var eventToUpdate = await _eventRepository.GetByIdAsync(request.EventId);
+            Event? eventToUpdate = await _eventRepository.GetByIdAsync(request.EventId);
 
             _mapper.Map(request, eventToUpdate, typeof(UpdateEventCommand), typeof(Event));
 

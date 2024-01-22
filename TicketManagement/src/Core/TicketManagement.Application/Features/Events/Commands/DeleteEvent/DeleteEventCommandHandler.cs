@@ -3,24 +3,17 @@ using MediatR;
 using TicketManagement.Application.Contracts.Persistence;
 using TicketManagement.Domain.Entities;
 
-namespace TicketManagement.Application.Features.Events.Commands.DeleteEvent
+namespace TicketManagement.Application.Features.Events.Commands.DeleteEvent;
+
+public class DeleteEventCommandHandler(IAsyncRepository<Event> eventRepository, IMapper mapper) : IRequestHandler<DeleteEventCommand>
 {
-    public class DeleteEventCommandHandler : IRequestHandler<DeleteEventCommand>
+    private readonly IAsyncRepository<Event> _eventRepository = eventRepository ?? throw new ArgumentNullException(nameof(eventRepository));
+    private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+
+    public async Task Handle(DeleteEventCommand request, CancellationToken cancellationToken)
     {
-        private readonly IAsyncRepository<Event> _eventRepository;
-        private readonly IMapper _mapper;
+        Event? eventToDelete = await _eventRepository.GetByIdAsync(request.EventId);
 
-        public DeleteEventCommandHandler(IMapper mapper, IAsyncRepository<Event> eventRepository)
-        {
-            _mapper = mapper;
-            _eventRepository = eventRepository;
-        }
-
-        public async Task Handle(DeleteEventCommand request, CancellationToken cancellationToken)
-        {
-            var eventToDelete = await _eventRepository.GetByIdAsync(request.EventId);
-
-            await _eventRepository.DeleteAsync(eventToDelete);
-        }
+        await _eventRepository.DeleteAsync(eventToDelete);
     }
 }
