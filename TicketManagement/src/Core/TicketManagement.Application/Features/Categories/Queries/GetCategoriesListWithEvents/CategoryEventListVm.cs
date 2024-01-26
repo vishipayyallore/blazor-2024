@@ -6,5 +6,5 @@ public class CategoryEventListVm
 
     public string? Name { get; set; }
 
-    public ICollection<CategoryEventDto>? Events { get; set; }
+    public ICollection<CategoryEventDto> Events { get; set; } = default!;
 }
