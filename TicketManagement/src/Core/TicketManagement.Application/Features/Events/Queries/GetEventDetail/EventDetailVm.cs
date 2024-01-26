@@ -18,5 +18,5 @@ public class EventDetailVm
 
     public Guid CategoryId { get; set; }
 
-    public CategoryDto? Category { get; set; }
+    public CategoryDto Category { get; set; } = default!;
 }
