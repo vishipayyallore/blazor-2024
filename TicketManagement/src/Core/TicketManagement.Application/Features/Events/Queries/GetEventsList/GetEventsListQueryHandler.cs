@@ -12,7 +12,7 @@ public class GetEventsListQueryHandler(IAsyncRepository<Event> eventRepository, 
 
     public async Task<List<EventListVm>> Handle(GetEventsListQuery request, CancellationToken cancellationToken)
     {
-        var allEvents = (await _eventRepository.ListAllAsync()).OrderBy(x => x.Date);
+        IOrderedEnumerable<Event>? allEvents = (await _eventRepository.ListAllAsync()).OrderBy(x => x.Date);
 
         return _mapper.Map<List<EventListVm>>(allEvents);
     }

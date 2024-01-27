@@ -23,5 +23,5 @@ public class BaseResponse
 
     public string Message { get; set; } = string.Empty;
 
-    public List<string>? ValidationErrors { get; set; }
+    public List<string> ValidationErrors { get; set; } = default!;
 }
