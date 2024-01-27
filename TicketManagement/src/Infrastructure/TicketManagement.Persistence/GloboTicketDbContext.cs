@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using TicketManagement.Domain.Common;
 using TicketManagement.Domain.Entities;
 
 namespace TicketManagement.Persistence;
