@@ -196,4 +196,10 @@ public class GloboTicketDbContext(DbContextOptions<GloboTicketDbContext> options
         }
         return base.SaveChangesAsync(cancellationToken);
     }
+
+    private static Guid ToGuid(string value)
+    {
+        return Guid.Parse(value);
+    }
+
 }
