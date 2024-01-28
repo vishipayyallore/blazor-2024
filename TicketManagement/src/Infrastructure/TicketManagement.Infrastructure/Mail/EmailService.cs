@@ -1,10 +1,4 @@
-﻿using GloboTicket.TicketManagement.Application.Contracts.Infrastructure;
-using GloboTicket.TicketManagement.Application.Models.Mail;
-using Microsoft.Extensions.Options;
-using SendGrid;
-using SendGrid.Helpers.Mail;
-
-namespace GloboTicket.TicketManagement.Infrastructure.Mail
+﻿namespace TicketManagement.Infrastructure.Mail
 {
     public class EmailService : IEmailService
     {
