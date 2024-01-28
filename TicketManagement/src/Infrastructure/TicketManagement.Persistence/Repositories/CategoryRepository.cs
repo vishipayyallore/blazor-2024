@@ -9,7 +9,7 @@ public class CategoryRepository(GloboTicketDbContext dbContext) : BaseRepository
 
     public async Task<List<Category>> GetCategoriesWithEvents(bool includePassedEvents)
     {
-        var allCategories = await _dbContext.Categories.Include(x => x.Events).ToListAsync();
+        List<Category>? allCategories = await _dbContext.Categories.Include(x => x.Events).ToListAsync();
 
         if (!includePassedEvents)
         {
