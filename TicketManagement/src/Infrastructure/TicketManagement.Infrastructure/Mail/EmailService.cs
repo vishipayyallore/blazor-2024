@@ -1,33 +1,37 @@
-﻿namespace TicketManagement.Infrastructure.Mail
-{
-    public class EmailService : IEmailService
-    {
-        public EmailSettings _emailSettings { get; }
+﻿using Microsoft.Extensions.Options;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using TicketManagement.Application.Contracts.Infrastructure;
+using TicketManagement.Application.Models.Mail;
 
-        public EmailService(IOptions<EmailSettings> mailSettings)
-        {
-            _emailSettings = mailSettings.Value;
-        }
+namespace TicketManagement.Infrastructure.Mail
+{
+    public class EmailService(IOptions<EmailSettings> mailSettings) : IEmailService
+    {
+        public EmailSettings Email_Settings { get; } = mailSettings.Value;
 
         public async Task<bool> SendEmail(Email email)
         {
-            var client = new SendGridClient(_emailSettings.ApiKey);
+            SendGridClient sendGridClient = new(Email_Settings.ApiKey);
 
-            var subject = email.Subject;
-            var to = new EmailAddress(email.To);
-            var emailBody = email.Body;
+            string? emailSubject = email.Subject;
+            EmailAddress? toEmailAddress = new(email.To);
+            string emailBody = email.Body;
 
-            var from = new EmailAddress
+            EmailAddress fromEmailAddress = new()
             {
-                Email = _emailSettings.FromAddress,
-                Name = _emailSettings.FromName
+                Email = Email_Settings.FromAddress,
+                Name = Email_Settings.FromName
             };
 
-            var sendGridMessage = MailHelper.CreateSingleEmail(from, to, subject, emailBody, emailBody);
-            var response = await client.SendEmailAsync(sendGridMessage);
+            SendGridMessage? sendGridMessage = MailHelper.CreateSingleEmail(fromEmailAddress, toEmailAddress, emailSubject, emailBody, emailBody);
+
+            Response? response = await sendGridClient.SendEmailAsync(sendGridMessage);
 
             if (response.StatusCode == System.Net.HttpStatusCode.Accepted || response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
                 return true;
+            }
 
             return false;
         }
