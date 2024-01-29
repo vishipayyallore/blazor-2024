@@ -1,15 +1,18 @@
 ﻿using AutoMapper;
 using FluentValidation.Results;
 using MediatR;
+using TicketManagement.Application.Contracts.Infrastructure;
 using TicketManagement.Application.Contracts.Persistence;
+using TicketManagement.Application.Models.Mail;
 using TicketManagement.Domain.Entities;
 
 namespace TicketManagement.Application.Features.Events.Commands.CreateEvent;
 
-public class CreateEventCommandHandler(IEventRepository eventRepository, IMapper mapper) : IRequestHandler<CreateEventCommand, Guid>
+public class CreateEventCommandHandler(IEventRepository eventRepository, IMapper mapper, IEmailService emailService) : IRequestHandler<CreateEventCommand, Guid>
 {
     private readonly IEventRepository _eventRepository = eventRepository ?? throw new ArgumentNullException(nameof(eventRepository));
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+    private readonly IEmailService _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
 
     public async Task<Guid> Handle(CreateEventCommand request, CancellationToken cancellationToken)
     {
@@ -24,6 +27,18 @@ public class CreateEventCommandHandler(IEventRepository eventRepository, IMapper
         }
 
         @event = await _eventRepository.AddAsync(@event);
+
+        //Sending email notification to admin address
+        var email = new Email() { To = "john@example.com", Body = $"A new event was created: {request}", Subject = "A new event was created" };
+
+        try
+        {
+            await _emailService.SendEmail(email);
+        }
+        catch (Exception ex)
+        {
+            //this shouldn't stop the API from doing else so this can be logged
+        }
 
         return @event.EventId;
     }
