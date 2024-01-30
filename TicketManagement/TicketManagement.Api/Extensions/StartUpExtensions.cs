@@ -5,28 +5,27 @@ using TicketManagement.Persistence;
 
 namespace TicketManagement.Api.Extensions;
 
-public static class StartupExtensions
+public static class StartUpExtensions
 {
-    public static WebApplication ConfigureServices(
-        this WebApplicationBuilder builder)
+    public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddApplicationServices();
-        builder.Services.AddInfrastructureServices(builder.Configuration);
-        builder.Services.AddPersistenceServices(builder.Configuration);
+        _ = builder.Services.AddApplicationServices();
+        _ = builder.Services.AddInfrastructureServices(builder.Configuration);
+        _ = builder.Services.AddPersistenceServices(builder.Configuration);
 
-        builder.Services.AddControllers();
+        _ = builder.Services.AddControllers();
 
-        builder.Services.AddCors(
+        _ = builder.Services.AddCors(
             options => options.AddPolicy(
                 "open",
                 policy => policy.WithOrigins([builder.Configuration["ApiUrl"] ?? "https://localhost:7020",
                         builder.Configuration["BlazorUrl"] ?? "https://localhost:7080"])
-        .AllowAnyMethod()
-        .SetIsOriginAllowed(pol => true)
-        .AllowAnyHeader()
-        .AllowCredentials()));
+                .AllowAnyMethod()
+                .SetIsOriginAllowed(pol => true)
+                .AllowAnyHeader()
+                .AllowCredentials()));
 
-        builder.Services.AddSwaggerGen();
+        _ = builder.Services.AddSwaggerGen();
 
         return builder.Build();
     }
@@ -34,27 +33,27 @@ public static class StartupExtensions
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
 
-        app.UseCors("open");
+        _ = app.UseCors("open");
 
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            _ = app.UseSwagger();
+            _ = app.UseSwaggerUI();
         }
 
-        app.UseHttpsRedirection();
-        app.MapControllers();
+        _ = app.UseHttpsRedirection();
+        _ = app.MapControllers();
 
         return app;
     }
 
     public static async Task ResetDatabaseAsync(this WebApplication app)
     {
-        using var scope = app.Services.CreateScope();
+        using IServiceScope scope = app.Services.CreateScope();
         try
         {
-            var context = scope.ServiceProvider.GetService<GloboTicketDbContext>();
-            if (context != null)
+            GloboTicketDbContext? context = scope.ServiceProvider.GetService<GloboTicketDbContext>();
+            if (context is not null)
             {
                 await context.Database.EnsureDeletedAsync();
                 await context.Database.MigrateAsync();
