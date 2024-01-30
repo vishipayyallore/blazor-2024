@@ -24,6 +24,8 @@ internal static class StartUpServicesExtensions
                 .AllowAnyHeader()
                 .AllowCredentials()));
 
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        _ = builder.Services.AddEndpointsApiExplorer();
         _ = builder.Services.AddSwaggerGen();
 
         return builder.Build();
