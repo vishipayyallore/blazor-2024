@@ -2,31 +2,30 @@
 using TicketManagement.Infrastructure;
 using TicketManagement.Persistence;
 
-namespace TicketManagement.Api.Extensions
+namespace TicketManagement.Api.Extensions;
+
+internal static class StartUpServicesExtensions
 {
-    internal static class StartUpServicesExtensions
+    public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
-        public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
-        {
-            _ = builder.Services.AddApplicationServices();
-            _ = builder.Services.AddInfrastructureServices(builder.Configuration);
-            _ = builder.Services.AddPersistenceServices(builder.Configuration);
+        _ = builder.Services.AddApplicationServices();
+        _ = builder.Services.AddInfrastructureServices(builder.Configuration);
+        _ = builder.Services.AddPersistenceServices(builder.Configuration);
 
-            _ = builder.Services.AddControllers();
+        _ = builder.Services.AddControllers();
 
-            _ = builder.Services.AddCors(
-                options => options.AddPolicy(
-                    "open",
-                    policy => policy.WithOrigins([builder.Configuration["ApiUrl"] ?? "https://localhost:7020",
-                        builder.Configuration["BlazorUrl"] ?? "https://localhost:7080"])
-                    .AllowAnyMethod()
-                    .SetIsOriginAllowed(pol => true)
-                    .AllowAnyHeader()
-                    .AllowCredentials()));
+        _ = builder.Services.AddCors(
+            options => options.AddPolicy(
+                "open",
+                policy => policy.WithOrigins([builder.Configuration["ApiUrl"] ?? "https://localhost:7020",
+                    builder.Configuration["BlazorUrl"] ?? "https://localhost:7080"])
+                .AllowAnyMethod()
+                .SetIsOriginAllowed(pol => true)
+                .AllowAnyHeader()
+                .AllowCredentials()));
 
-            _ = builder.Services.AddSwaggerGen();
+        _ = builder.Services.AddSwaggerGen();
 
-            return builder.Build();
-        }
+        return builder.Build();
     }
 }
