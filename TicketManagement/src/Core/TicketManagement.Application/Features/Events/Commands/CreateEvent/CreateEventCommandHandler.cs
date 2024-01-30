@@ -29,7 +29,7 @@ public class CreateEventCommandHandler(IEventRepository eventRepository, IMapper
         @event = await _eventRepository.AddAsync(@event);
 
         //Sending email notification to admin address
-        var email = new Email() { To = "john@example.com", Body = $"A new event was created: {request}", Subject = "A new event was created" };
+        Email? email = new() { To = "john@example.com", Body = $"A new event was created: {request}", Subject = "A new event was created" };
 
         try
         {
@@ -38,6 +38,7 @@ public class CreateEventCommandHandler(IEventRepository eventRepository, IMapper
         catch (Exception ex)
         {
             //this shouldn't stop the API from doing else so this can be logged
+            Console.WriteLine($"Mailing about event {@event.EventId} failed due to an error with the mail service: {ex.Message}");
         }
 
         return @event.EventId;
