@@ -20,6 +20,7 @@ internal static class StartUpDatabaseExtensions
         catch (Exception ex)
         {
             //add logging here later on
+            Console.WriteLine(ex.Message);
         }
     }
 }
