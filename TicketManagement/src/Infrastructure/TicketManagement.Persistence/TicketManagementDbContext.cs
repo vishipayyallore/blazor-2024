@@ -5,7 +5,7 @@ using TicketManagement.Domain.Entities;
 
 namespace TicketManagement.Persistence;
 
-public class GloboTicketDbContext(DbContextOptions<GloboTicketDbContext> options) : DbContext(options)
+public class TicketManagementDbContext(DbContextOptions<TicketManagementDbContext> options) : DbContext(options)
 {
     public DbSet<Event> Events => Set<Event>();
 
@@ -15,7 +15,7 @@ public class GloboTicketDbContext(DbContextOptions<GloboTicketDbContext> options
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(GloboTicketDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(TicketManagementDbContext).Assembly);
 
         //seed data, added through migrations
         Guid concertGuid = ToGuid("{B0788D2F-8003-43C1-92A4-EDC76A7C5DDE}");

@@ -4,7 +4,7 @@ using TicketManagement.Domain.Entities;
 namespace TicketManagement.Persistence.Repositories;
 
 
-public class EventRepository(GloboTicketDbContext dbContext) : BaseRepository<Event>(dbContext), IEventRepository
+public class EventRepository(TicketManagementDbContext dbContext) : BaseRepository<Event>(dbContext), IEventRepository
 {
     public Task<bool> IsEventNameAndDateUnique(string name, DateTime eventDate)
     {

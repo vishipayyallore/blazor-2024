@@ -4,7 +4,7 @@ using TicketManagement.Domain.Entities;
 
 namespace TicketManagement.Persistence.Repositories;
 
-public class OrderRepository(GloboTicketDbContext dbContext) : BaseRepository<Order>(dbContext), IOrderRepository
+public class OrderRepository(TicketManagementDbContext dbContext) : BaseRepository<Order>(dbContext), IOrderRepository
 {
     public async Task<List<Order>> GetPagedOrdersForMonth(DateTime date, int page, int size)
     {

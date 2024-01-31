@@ -4,7 +4,7 @@ using TicketManagement.Domain.Entities;
 
 namespace TicketManagement.Persistence.Repositories;
 
-public class CategoryRepository(GloboTicketDbContext dbContext) : BaseRepository<Category>(dbContext), ICategoryRepository
+public class CategoryRepository(TicketManagementDbContext dbContext) : BaseRepository<Category>(dbContext), ICategoryRepository
 {
 
     public async Task<List<Category>> GetCategoriesWithEvents(bool includePassedEvents)
