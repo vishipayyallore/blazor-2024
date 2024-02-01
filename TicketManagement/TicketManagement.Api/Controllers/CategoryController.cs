@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TicketManagement.Application.Features.Categories.Commands.CreateCategory;
 using TicketManagement.Application.Features.Categories.Queries.GetCategoriesList;
