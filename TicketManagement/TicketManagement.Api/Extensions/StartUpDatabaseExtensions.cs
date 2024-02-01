@@ -10,7 +10,7 @@ internal static class StartUpDatabaseExtensions
         using IServiceScope scope = app.Services.CreateScope();
         try
         {
-            GloboTicketDbContext? context = scope.ServiceProvider.GetService<GloboTicketDbContext>();
+            TicketManagementDbContext? context = scope.ServiceProvider.GetService<TicketManagementDbContext>();
             if (context is not null)
             {
                 await context.Database.EnsureDeletedAsync();
@@ -20,6 +20,7 @@ internal static class StartUpDatabaseExtensions
         catch (Exception ex)
         {
             //add logging here later on
+            Console.WriteLine(ex.Message);
         }
     }
 }

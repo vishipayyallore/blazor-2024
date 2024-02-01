@@ -3,9 +3,9 @@ using TicketManagement.Application.Contracts.Persistence;
 
 namespace TicketManagement.Persistence.Repositories;
 
-public class BaseRepository<T>(GloboTicketDbContext dbContext) : IAsyncRepository<T> where T : class
+public class BaseRepository<T>(TicketManagementDbContext dbContext) : IAsyncRepository<T> where T : class
 {
-    protected readonly GloboTicketDbContext _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+    protected readonly TicketManagementDbContext _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 
     public virtual async Task<T> GetByIdAsync(Guid id)
     {
